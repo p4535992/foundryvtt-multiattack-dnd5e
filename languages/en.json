@@ -47,6 +47,9 @@
                 "setDefault": "Set Default",
                 "clearDefault": "Clear Default"
             }
+        },
+        "label": {
+            "multiattack": "Multiattack, Multi Attack"
         }
     }
 }

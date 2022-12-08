@@ -180,7 +180,7 @@ Hooks.on("dnd5e.preUseItem", (item, config, options) => {
 // Hooks.on("dnd5e.useItem", (item, config, options) => {
     const actor = item.actor ? item.actor : item.parent;
     if(actor) {
-        const labelsToCheck = game.i18n.localize("TIDY5E.label.MultiAttack").toLowerCase().split(",");
+        const labelsToCheck = game.i18n.localize("multiattack-5e.label.multiattack").toLowerCase().split(",");
         if(labelsToCheck.includes(item.name.toLowerCase())) {
             multiattackTool(actor);
         }
