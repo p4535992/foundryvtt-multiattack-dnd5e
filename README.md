@@ -29,31 +29,32 @@ Users can perform several attack / damage rolls at once, and the output is conde
 * Select the number of extra attacks to roll
 
 ### Multiattack with default dnd5e roller
+
 * Select a single token
 * Click the Multiattack tool button in the token layer toolbar on the left (GMs can enable/disable this button for players)
 * Check each item to be included in the roll and input how many of that item's attack/damage to roll
 * Optional: Use the default buttons to save the entire multiattack configuration for subsequent attacks
 
+# API
 The MA5e API has been opened to allow multiattacks to be made programmatically:
+
 ```js
 const weapons = ["Longsword", "Longsword", "Dagger"]; // Make two longsword attacks and one dagger attack
 const rollType = "attack"; // rollType is set to "attack" by default, but can also be set to "damage"
 const actor = canvas.tokens.controlled[0].actor; // GM users could pre-define multiattack rolls for various actors
 game.MA5e.multiattack(weapons, rollType, actor); // rollType and actor arguments are optional (default to "attack" and "canvas.tokens.controlled[0].actor" respectively)
 ```
+const context = {
+
+};
+
+game.modules.get("multiattack-5e").api.multiattack({context})
 
 For Midi-QOL:
 ```js
 const weapons = ["Longsword", "Longsword", "Dagger"]; // Make two longsword attacks and one dagger attack
 const actor = canvas.tokens.controlled[0].actor; // GM users could pre-define multiattack rolls for various actors
 game.MA5e.midiMA5e(weapons, actor) // actor argument is optional (default set to "canvas.tokens.controlled[0].actor); note that this function is ASYNC
-```
-
-For Better Rolls for 5e
-```js
-const weapons = ["Longsword", "Longsword", "Dagger"]; // Make two longsword attacks and one dagger attack
-const actor = canvas.tokens.controlled[0].actor; // GM users could pre-define multiattack rolls for various actors
-game.MA5e.brMA5E(weapons, actor) // actor argument is optional (default set to "canvas.tokens.controlled[0].actor)
 ```
 
 ## Technical Notes
