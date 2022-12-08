@@ -1,4 +1,4 @@
-import { multiattackTool } from "./multiattack";
+import { multiattackTool } from "./multiattack-tools";
 import { Multiattack5e } from "./Multiattack5e";
 
 const moduleID = 'multiattack-5e';
