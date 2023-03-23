@@ -1,3 +1,5 @@
+import CONSTANTS from "./constants";
+
 export class Multiattack5e {
     static async multiattack({
         actor,
@@ -22,7 +24,7 @@ export class Multiattack5e {
 
         // Build array of rolls.
         const rollMethod = isAttackRoll ? CONFIG.Item.documentClass.prototype.rollAttack : CONFIG.Item.documentClass.prototype.rollDamage;
-        const condenseChatMessages = game.settings.get(moduleID, 'condenseChatMessagesEnabled');
+        const condenseChatMessages = game.settings.get(CONSTANTS.MODULE_NAME, 'condenseChatMessagesEnabled');
         let rollOptions;
         const commonRollOptions = {
             fastForward: true,
@@ -94,11 +96,11 @@ export class Multiattack5e {
         if (!isAttackRoll) templateData.totalDamage = rolls.reduce((acc, current) => { return acc += current.total }, 0);
 
         // Render template.
-        const content = await renderTemplate(`modules/${moduleID}/templates/condensed-chat-message.hbs`, templateData);
+        const content = await renderTemplate(`modules/${CONSTANTS.MODULE_NAME}/templates/condensed-chat-message.hbs`, templateData);
         messageData.content = content;
 
         messageData.flags = {
-            [moduleID]: {
+            [CONSTANTS.MODULE_NAME]: {
                 isMultiattack: true,
             },
             'semi-private-rolls': { // Compatibility with Semi-Private Rolls.
@@ -110,9 +112,9 @@ export class Multiattack5e {
         delete messageData.flavor;
 
         // Conditionally hide DsN based on extraAttackDSN setting.
-        const dsn = isExtraAttack 
-            ? game.settings.get(moduleID, 'extraAttackDSN')
-            : game.settings.get(moduleID, 'multiattackDSN');
+        const dsn = isExtraAttack
+            ? game.settings.get(CONSTANTS.MODULE_NAME, 'extraAttackDSN')
+            : game.settings.get(CONSTANTS.MODULE_NAME, 'multiattackDSN');
         if (dsn !== 'enabled' && (extraAttackDSN === 'disabled' || dsn !== rollType)) {
             Hooks.once('diceSoNiceRollStart', (id, context) => { context.blind = true });
         }
@@ -144,10 +146,10 @@ export class Multiattack5e {
             };
             templateData.items.push(itemData);
         }
-        const content = await renderTemplate(`modules/${moduleID}/templates/multiattack-tool-dialog.hbs`, templateData);
+        const content = await renderTemplate(`modules/${CONSTANTS.MODULE_NAME}/templates/multiattack-tool-dialog.hbs`, templateData);
         const buttonPosition = document.querySelector(`li.control-tool[data-tool="multiattackTool"]`);
         const dialogOptions = {
-            id: 'multiattack-tool-dialog',
+            id: 'multiattack-5e-multiattack-tool-dialog',
             width: 250,
             top: buttonPosition.offsetTop,
             left: buttonPosition.offsetLeft + 50,
@@ -170,7 +172,7 @@ export class Multiattack5e {
             },
             render: ([html]) => {
                 // Apply default multiattack data.
-                const defaultMultiattack = tokenObj.document.getFlag(moduleID, 'defaultMultiattack');
+                const defaultMultiattack = tokenObj.document.getFlag(CONSTANTS.MODULE_NAME, 'defaultMultiattack');
                 if (defaultMultiattack) {
                     for (const itemID of defaultMultiattack) {
                         const option = html.querySelector(`div#${itemID}`);
@@ -190,19 +192,19 @@ export class Multiattack5e {
                 const tokenDoc = tokenObj.document;
                 function setDefault() {
                     const itemIDarray = toolDataToItemIDarray(html);
-                    tokenDoc.setFlag(moduleID, 'defaultMultiattack', itemIDarray);
+                    tokenDoc.setFlag(CONSTANTS.MODULE_NAME, 'defaultMultiattack', itemIDarray);
                     ui.notifications.info(`${ma5eLocalize("ui.setDefault")} ${tokenDoc.name}.`);
                 }
 
                 function clearDefault() {
-                    const checkboxes = html.querySelectorAll(`input.${moduleID}-checkbox`);
-                    const inputs = html.querySelectorAll('input.multiattack-5e-input');
+                    const checkboxes = html.querySelectorAll(`input.${CONSTANTS.MODULE_NAME}-checkbox`);
+                    const inputs = html.querySelectorAll(`input.${CONSTANTS.MODULE_NAME}-input`);
                     for (let i = 0; i < checkboxes.length; i++) {
                         checkboxes[i].checked = false;
                         inputs[i].value = null;
                     }
 
-                    tokenDoc.unsetFlag(moduleID, 'defaultMultiattack');
+                    tokenDoc.unsetFlag(CONSTANTS.MODULE_NAME, 'defaultMultiattack');
                     ui.notifications.warn(`${ma5eLocalize('ui.clearDefault')} ${tokenDoc.name}`);
                 }
             },
@@ -223,7 +225,7 @@ export class Multiattack5e {
 
         function toolDataToItemIDarray(html) {
             const itemIDarray = [];
-            const items = html.querySelectorAll(`div.${moduleID}-item`);
+            const items = html.querySelectorAll(`div.${CONSTANTS.MODULE_NAME}-item`);
             items.forEach(div => {
                 const checkbox = div.querySelector('input[type="checkbox"]');
                 if (!checkbox.checked) return;

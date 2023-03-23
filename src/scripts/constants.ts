@@ -1,6 +1,6 @@
 const CONSTANTS = {
-	MODULE_NAME: "Border-Control",
-	PATH: `modules/Border-Control/`
+	MODULE_NAME: "multiattack-5e",
+	PATH: `modules/multiattack-5e/`
 };
 
 CONSTANTS.PATH = `modules/${CONSTANTS.MODULE_NAME}/`;

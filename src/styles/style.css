@@ -69,13 +69,13 @@
 .multiattack-5e-tool-flex {
     display: flex;
     align-items: center;
-} 
+}
 
 .multiattack-5e-tool-flex .multiattack-5e-button {
     background: rgba(0, 0, 0, 0.1);
     border: 2px groove #f0f0e0;
 }
 
-#multiattack-tool-dialog .dialog-buttons {
+#multiattack-5e-multiattack-tool-dialog .dialog-buttons {
     flex-direction: column;
 }

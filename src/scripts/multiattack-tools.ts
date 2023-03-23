@@ -1,3 +1,5 @@
+import CONSTANTS from "./constants";
+
 export async function multiattackTool(actor) {
 
 
@@ -17,10 +19,10 @@ export async function multiattackTool(actor) {
         };
         templateData.items.push(itemData);
     }
-    const content = await renderTemplate(`modules/${"multiattack-5e"}/templates/multiattack-tool-dialog.hbs`, templateData);
+    const content = await renderTemplate(`modules/${CONSTANTS.MODULE_NAME}/templates/multiattack-tool-dialog.hbs`, templateData);
     const buttonPosition = document.querySelector(`li.control-tool[data-tool="multiattackTool"]`);
     const dialogOptions = {
-        id: 'multiattack-tool-dialog',
+        id: 'multiattack-5e-multiattack-tool-dialog',
         width: 250,
         top: buttonPosition.offsetTop,
         left: buttonPosition.offsetLeft + 50,
@@ -43,7 +45,7 @@ export async function multiattackTool(actor) {
         },
         render: ([html]) => {
             // Apply default multiattack data.
-            const defaultMultiattack = actor.getFlag("multiattack-5e", 'defaultMultiattack');
+            const defaultMultiattack = actor.getFlag(CONSTANTS.MODULE_NAME, 'defaultMultiattack');
             if (defaultMultiattack) {
                 for (const itemID of defaultMultiattack) {
                     const option = html.querySelector(`div#${itemID}`);
@@ -63,19 +65,19 @@ export async function multiattackTool(actor) {
 
             function setDefault() {
                 const itemIDarray = toolDataToItemIDarray(html);
-                actor.setFlag("multiattack-5e", 'defaultMultiattack', itemIDarray);
+                actor.setFlag(CONSTANTS.MODULE_NAME, 'defaultMultiattack', itemIDarray);
                 ui.notifications.info(`${ma5eLocalize("ui.setDefault")} ${actor.name}.`);
             }
 
             function clearDefault() {
-                const checkboxes = html.querySelectorAll(`input.${"multiattack-5e"}-checkbox`);
-                const inputs = html.querySelectorAll('input.multiattack-5e-input');
+                const checkboxes = html.querySelectorAll(`input.${CONSTANTS.MODULE_NAME}-checkbox`);
+                const inputs = html.querySelectorAll(`input.${CONSTANTS.MODULE_NAME}-input`);
                 for (let i = 0; i < checkboxes.length; i++) {
                     checkboxes[i].checked = false;
                     inputs[i].value = null;
                 }
 
-                actor.unsetFlag("multiattack-5e", 'defaultMultiattack');
+                actor.unsetFlag(CONSTANTS.MODULE_NAME, 'defaultMultiattack');
                 ui.notifications.warn(`${ma5eLocalize('ui.clearDefault')} ${actor.name}`);
             }
         },
@@ -85,19 +87,19 @@ export async function multiattackTool(actor) {
             }
             // Build itemIDarray and send to Multiattack5e.multiattack.
             const itemIDarray = toolDataToItemIDarray(html);
-            await game.modules.get('multiattack-5e').api.multiattack(
+            await game.modules.get(CONSTANTS.MODULE_NAME).api.multiattack(
                 {
                     actor: actor,
-                    itemNameArray: [], 
-                    itemIDarray: itemIDarray, 
-                    chatMessage: true, 
-                    messageData: undefined, 
+                    itemNameArray: [],
+                    itemIDarray: itemIDarray,
+                    chatMessage: true,
+                    messageData: undefined,
                     primeRoll: undefined,
                     isAttackRoll: rollType === 'attack',
                     isExtraAttack: false,
                     rollMode: game.settings.get('core', 'rollMode'),
-                    sitBonus: undefined, 
-                    vantage: 'normal', 
+                    sitBonus: undefined,
+                    vantage: 'normal',
                     isCritical: false
                 }
             );
@@ -106,11 +108,11 @@ export async function multiattackTool(actor) {
 
 }
 
-const ma5eLocalize = key => game.i18n.localize(`${"multiattack-5e"}.${key}`);
+const ma5eLocalize = key => game.i18n.localize(`${CONSTANTS.MODULE_NAME}.${key}`);
 
 function toolDataToItemIDarray(html) {
     const itemIDarray = [];
-    const items = html.querySelectorAll(`div.${"multiattack-5e"}-item`);
+    const items = html.querySelectorAll(`div.${CONSTANTS.MODULE_NAME}-item`);
     items.forEach(div => {
         const checkbox = div.querySelector('input[type="checkbox"]');
         if (!checkbox.checked) {
@@ -150,8 +152,8 @@ function retrieveAllWeaponsAndSpellNamesFromActor(actor) {
 // Calculate slots and ammunition
 
 /**
- * 
- * @param {*} item 
+ *
+ * @param {*} item
  * @returns {available:number, maximum:number|null, isAmmunition:boolean}
  */
 function calculateUsesForItem(item) {
