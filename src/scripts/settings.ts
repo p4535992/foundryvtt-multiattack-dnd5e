@@ -1,13 +1,9 @@
 import { debug, log, warn, i18n } from "./lib/lib";
 import CONSTANTS from "./constants";
 
-let possibleSystems = ["dnd5e", "symbaroum", "pf2e", "pf1", "swade"];
-
-let fontFamilies = {};
+export let roller = 'core';
 
 export const registerSettings = function () {
-	//@ts-ignore
-	CONFIG.fontFamilies.forEach((i) => (fontFamilies[`${i}`] = i));
 
 	game.settings.registerMenu(CONSTANTS.MODULE_NAME, "resetAllSettings", {
 		name: `${CONSTANTS.MODULE_NAME}.setting.reset.name`,
@@ -20,7 +16,7 @@ export const registerSettings = function () {
 	// =====================================================================
 
     game.settings.register(CONSTANTS.MODULE_NAME, 'condenseChatMessagesEnabled', {
-        name: `${CONSTANTS.MODULE_NAME}.settings.condenseChatMessagesEnabled.name`),
+        name: `${CONSTANTS.MODULE_NAME}.settings.condenseChatMessagesEnabled.name`,
         scope: 'world',
         config: roller === 'core',
         type: Boolean,
@@ -28,7 +24,7 @@ export const registerSettings = function () {
     });
 
     game.settings.register(CONSTANTS.MODULE_NAME, 'multiattackToolEnabled', {
-        name: `${CONSTANTS.MODULE_NAME}.settings.multiattackToolEnabled.name`),
+        name: `${CONSTANTS.MODULE_NAME}.settings.multiattackToolEnabled.name`,
         scope: 'world',
         config: true,
         type: Boolean,
@@ -37,8 +33,8 @@ export const registerSettings = function () {
     });
 
     game.settings.register(CONSTANTS.MODULE_NAME, 'playerToolEnabled', {
-        name: `${CONSTANTS.MODULE_NAME}.settings.playerToolEnabled.name`),
-        hint: `${CONSTANTS.MODULE_NAME}.settings.playerToolEnabled.hint`),
+        name: `${CONSTANTS.MODULE_NAME}.settings.playerToolEnabled.name`,
+        hint: `${CONSTANTS.MODULE_NAME}.settings.playerToolEnabled.hint`,
         scope: 'world',
         config: true,
         type: Boolean,
@@ -46,30 +42,30 @@ export const registerSettings = function () {
     });
 
     game.settings.register(CONSTANTS.MODULE_NAME, 'extraAttackDSN', {
-        name: `${CONSTANTS.MODULE_NAME}.settings.extraAttackDSN.name`),
-        hint: `${CONSTANTS.MODULE_NAME}.settings.extraAttackDSN.hint`),
+        name: `${CONSTANTS.MODULE_NAME}.settings.extraAttackDSN.name`,
+        hint: `${CONSTANTS.MODULE_NAME}.settings.extraAttackDSN.hint`,
         scope: 'world',
         config: game.modules.get('dice-so-nice')?.active && roller === 'core',
         type: String,
         choices: {
-            disabled: `${CONSTANTS.MODULE_NAME}.settings.disabled'),
-            attack: `${CONSTANTS.MODULE_NAME}.settings.attackOnly'),
-            damage: `${CONSTANTS.MODULE_NAME}.settings.damageOnly'),
-            enabled: `${CONSTANTS.MODULE_NAME}.settings.enabled'),
+            disabled: `${CONSTANTS.MODULE_NAME}.settings.disabled`,
+            attack: `${CONSTANTS.MODULE_NAME}.settings.attackOnly`,
+            damage: `${CONSTANTS.MODULE_NAME}.settings.damageOnly`,
+            enabled: `${CONSTANTS.MODULE_NAME}.settings.enabled`,
         },
         default: 'enabled'
     });
 
     game.settings.register(CONSTANTS.MODULE_NAME, 'multiattackDSN', {
-        name: `${CONSTANTS.MODULE_NAME}.settings.multiattackDSN.name`),
+        name: `${CONSTANTS.MODULE_NAME}.settings.multiattackDSN.name`,
         scope: 'world',
         config: game.modules.get('dice-so-nice')?.active && roller === 'core',
         type: String,
         choices: {
-            disabled: `${CONSTANTS.MODULE_NAME}.settings.disabled'),
-            attack: `${CONSTANTS.MODULE_NAME}.settings.attackOnly'),
-            damage: `${CONSTANTS.MODULE_NAME}.settings.damageOnly'),
-            enabled: `${CONSTANTS.MODULE_NAME}.settings.enabled'),
+            disabled: `${CONSTANTS.MODULE_NAME}.settings.disabled`,
+            attack: `${CONSTANTS.MODULE_NAME}.settings.attackOnly`,
+            damage: `${CONSTANTS.MODULE_NAME}.settings.damageOnly`,
+            enabled: `${CONSTANTS.MODULE_NAME}.settings.enabled`,
         },
         default: 'enabled'
     });
@@ -92,7 +88,7 @@ class ResetSettingsDialog extends FormApplication<FormApplicationOptions, object
 		super(...args);
 		//@ts-ignore
 		return new Dialog({
-			title: game.i18n.localize(`${CONSTANTS.MODULE_NAME}.dialogs.resetsettings.title`),
+			title: game.i18n.localize(`${CONSTANTS.MODULE_NAME}.dialogs.resetsettings.title`,
 			content:
 				'<p style="margin-bottom:1rem;">' +
 				game.i18n.localize(`${CONSTANTS.MODULE_NAME}.dialogs.resetsettings.content`) +
@@ -100,7 +96,7 @@ class ResetSettingsDialog extends FormApplication<FormApplicationOptions, object
 			buttons: {
 				confirm: {
 					icon: '<i class="fas fa-check"></i>',
-					label: game.i18n.localize(`${CONSTANTS.MODULE_NAME}.dialogs.resetsettings.confirm`),
+					label: game.i18n.localize(`${CONSTANTS.MODULE_NAME}.dialogs.resetsettings.confirm`,
 					callback: async () => {
 						const worldSettings = game.settings.storage
 							?.get("world")
